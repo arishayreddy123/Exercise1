@@ -56,7 +56,7 @@ public class ListCarsActivity extends AppCompatActivity {
             Car selectedCar = carMap.get(selectedCarId);
 
             if (selectedCar != null) {
-                Intent intent = new Intent(ListCarsActivity.this, UpdateDeleteCarActivity.class);
+                Intent intent = new Intent(ListCarsActivity.this, UpdateCarActivity.class);
                 intent.putExtra("carId", selectedCarId);
                 intent.putExtra("make", selectedCar.make);
                 intent.putExtra("model", selectedCar.model);
