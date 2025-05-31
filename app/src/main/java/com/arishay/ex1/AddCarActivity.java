@@ -59,17 +59,20 @@ public class AddCarActivity extends AppCompatActivity {
         }
 
         String id = carDatabase.push().getKey();
+        if (id == null) {
+            Toast.makeText(this, "Failed to generate ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Car newCar = new Car(id, make, model, year, color);
 
-        if (id != null) {
-            carDatabase.child(id).setValue(newCar)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Car added successfully", Toast.LENGTH_SHORT).show();
-                        finish(); // Return to previous screen
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Failed to add car", Toast.LENGTH_SHORT).show()
-                    );
-        }
+        carDatabase.child(id).setValue(newCar)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Car added successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to add car", Toast.LENGTH_SHORT).show()
+                );
     }
 }

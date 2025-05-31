@@ -1,96 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutAddCar"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="20dp"
-    tools:context=".AddCarActivity">
+    android:background="@android:color/white">
 
-    <!-- Back button with text -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
+        <!-- Back button with label -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_previous"
-            android:contentDescription="Back" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_previous"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp" />
+        </LinearLayout>
+
+        <!-- Title -->
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Car"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:gravity="center" />
+
+        <!-- Form Inputs -->
+        <EditText
+            android:id="@+id/etMake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Make"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/etModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Model"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/etYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Year"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/etColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:inputType="textCapWords" />
+
+        <!-- Add button with icon and label -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:textSize="16sp"
-            android:layout_marginStart="5dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_input_add"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Add" />
+
+            <TextView
+                android:id="@+id/tvAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!-- Form Fields -->
-    <EditText
-        android:id="@+id/etMake"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Make"
-        android:inputType="textCapWords"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="@android:color/darker_gray" />
-
-    <EditText
-        android:id="@+id/etModel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Model"
-        android:inputType="textCapWords"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/darker_gray" />
-
-    <EditText
-        android:id="@+id/etYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Year"
-        android:inputType="number"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/darker_gray" />
-
-    <EditText
-        android:id="@+id/etColor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Color"
-        android:inputType="textCapWords"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/darker_gray" />
-
-    <!-- Add Button with Icon -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:gravity="center_vertical">
-
-        <ImageButton
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_input_add"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Add" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:textSize="16sp"
-            android:layout_marginStart="5dp" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
