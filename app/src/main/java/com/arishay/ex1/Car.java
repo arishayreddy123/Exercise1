@@ -8,7 +8,7 @@ public class Car {
     public String color;
 
     public Car() {
-        // Default constructor for Firebase
+        // Required by Firebase
     }
 
     public Car(String id, String make, String model, int year, String color) {
