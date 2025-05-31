@@ -2,15 +2,13 @@ package com.arishay.ex1;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 
@@ -25,11 +23,11 @@ public class DeleteCarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_car);
 
-        recyclerView = findViewById(R.id.recyclerViewDelete);
+        recyclerView = findViewById(R.id.recyclerViewDelete);  // ✅ This ID must exist in your layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         carList = new ArrayList<>();
 
-        adapter = new CarDeleteAdapter(this, carList, this::deleteCar); // ✅ FIXED
+        adapter = new CarDeleteAdapter(this, carList, this::deleteCar);
         recyclerView.setAdapter(adapter);
 
         loadCars();
