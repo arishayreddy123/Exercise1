@@ -1,72 +1,89 @@
 package com.arishay.ex1;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 
 public class UpdateCarActivity extends AppCompatActivity {
-    private EditText etCarId, etMake, etModel, etYear, etColor;
-    private Button btnUpdate;
-    private DatabaseReference dbRef;
+
+    private EditText etMake, etModel, etYear, etColor;
+    private ImageButton btnUpdate, btnBack;
+    private TextView tvUpdate;
+
+    private DatabaseReference carRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_car);
 
-        etCarId = findViewById(R.id.etCarId);
         etMake = findViewById(R.id.etMake);
         etModel = findViewById(R.id.etModel);
         etYear = findViewById(R.id.etYear);
         etColor = findViewById(R.id.etColor);
         btnUpdate = findViewById(R.id.btnUpdate);
+        tvUpdate = findViewById(R.id.tvUpdate);
+        btnBack = findViewById(R.id.btnBack);
 
-        dbRef = FirebaseDatabase.getInstance().getReference("cars");
+        carRef = FirebaseDatabase.getInstance().getReference("cars");
 
         btnUpdate.setOnClickListener(v -> updateCar());
+        tvUpdate.setOnClickListener(v -> updateCar());
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void updateCar() {
-        String id = etCarId.getText().toString().trim();
         String make = etMake.getText().toString().trim();
         String model = etModel.getText().toString().trim();
+        String yearStr = etYear.getText().toString().trim();
         String color = etColor.getText().toString().trim();
 
-        if (id.isEmpty()) {
-            etCarId.setError("ID required");
-            return;
-        }
-        if (make.isEmpty() || model.isEmpty() || etYear.getText().toString().trim().isEmpty() || color.isEmpty()) {
+        if (make.isEmpty() || model.isEmpty() || yearStr.isEmpty() || color.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int year;
         try {
-            year = Integer.parseInt(etYear.getText().toString().trim());
+            year = Integer.parseInt(yearStr);
         } catch (NumberFormatException e) {
-            etYear.setError("Enter a valid year");
+            Toast.makeText(this, "Year must be a number", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Car car = new Car(make, model, year, color);
-        dbRef.child(id).setValue(car).addOnSuccessListener(aVoid -> {
-            Toast.makeText(UpdateCarActivity.this, "Car updated successfully", Toast.LENGTH_SHORT).show();
-            clearFields();
-        }).addOnFailureListener(e -> Toast.makeText(UpdateCarActivity.this, "Failed to update car: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
+        // Search and update car by matching make + model + year
+        carRef.orderByChild("make").equalTo(make)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        boolean found = false;
+                        for (DataSnapshot carSnap : snapshot.getChildren()) {
+                            Car car = carSnap.getValue(Car.class);
+                            if (car != null && car.model.equals(model) && car.year == year) {
+                                String carId = carSnap.getKey();
+                                Car updatedCar = new Car(carId, make, model, year, color);
+                                carRef.child(carId).setValue(updatedCar);
+                                Toast.makeText(UpdateCarActivity.this, "Car updated!", Toast.LENGTH_SHORT).show();
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            Toast.makeText(UpdateCarActivity.this, "Car not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-    private void clearFields() {
-        etCarId.setText("");
-        etMake.setText("");
-        etModel.setText("");
-        etYear.setText("");
-        etColor.setText("");
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(UpdateCarActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
