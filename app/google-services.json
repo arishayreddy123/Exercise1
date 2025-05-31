@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "519914652654",
+    "project_id": "exercise1-ccbdc",
+    "storage_bucket": "exercise1-ccbdc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519914652654:android:22cc3a957dcd2b3e9804ff",
+        "android_client_info": {
+          "package_name": "com.arishay.ex1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsY9XclpnbPqFhX8fITh1pf8iE-UdQSRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
