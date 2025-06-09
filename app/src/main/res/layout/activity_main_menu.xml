@@ -49,12 +49,13 @@
         android:id="@+id/btnSearchCar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Search Car"
         android:backgroundTint="#2196F3"
+        android:text="Search Car"
         android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/btnUpdateCar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintHorizontal_bias="0.274"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnUpdateCar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
