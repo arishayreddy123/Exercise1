@@ -8,18 +8,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.*;
+
 import java.util.ArrayList;
 
 public class SearchCarActivity extends AppCompatActivity {
 
     private EditText etSearch;
     private ImageButton btnSearch, btnBackSearch;
-    private RecyclerView rvSearchResults;
     private TextView tvNoResults;
+    private RecyclerView rvSearchResults;
+
+    private DatabaseReference dbRef;
     private ArrayList<Car> carList;
     private CarAdapter adapter;
-    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,37 +32,37 @@ public class SearchCarActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
         btnBackSearch = findViewById(R.id.btnBackSearch);
-        rvSearchResults = findViewById(R.id.rvSearchResults);
         tvNoResults = findViewById(R.id.tvNoResults);
+        rvSearchResults = findViewById(R.id.rvSearchResults);
 
+        rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         carList = new ArrayList<>();
         adapter = new CarAdapter(carList);
-        rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         rvSearchResults.setAdapter(adapter);
 
         dbRef = FirebaseDatabase.getInstance().getReference("cars");
 
-        btnSearch.setOnClickListener(v -> {
-            String make = etSearch.getText().toString().trim();
-            if (TextUtils.isEmpty(make)) {
-                Toast.makeText(this, "Please enter a car make", Toast.LENGTH_SHORT).show();
-            } else {
-                searchCars(make);
-            }
-        });
-
         btnBackSearch.setOnClickListener(v -> finish());
+
+        btnSearch.setOnClickListener(v -> {
+            String makeToSearch = etSearch.getText().toString().trim().toLowerCase();
+            if (TextUtils.isEmpty(makeToSearch)) {
+                Toast.makeText(this, "Please enter a car make", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            searchCarsByMake(makeToSearch);
+        });
     }
 
-    private void searchCars(String makeQuery) {
+    private void searchCarsByMake(String make) {
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 carList.clear();
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    Car car = snap.getValue(Car.class);
+                for (DataSnapshot carSnap : snapshot.getChildren()) {
+                    Car car = carSnap.getValue(Car.class);
                     if (car != null && car.make != null &&
-                            car.make.equalsIgnoreCase(makeQuery)) {
+                            car.make.toLowerCase().contains(make)) {
                         carList.add(car);
                     }
                 }
@@ -75,7 +78,7 @@ public class SearchCarActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SearchCarActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchCarActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

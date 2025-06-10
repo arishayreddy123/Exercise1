@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingTop="48dp"
+    android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E3F2FD">
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/btnBackSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_media_previous"
-        android:background="@android:color/transparent"
-        android:contentDescription="Back" />
-
-    <!-- Search Bar -->
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingTop="12dp">
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical">
 
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
+        <ImageButton
+            android:id="@+id/btnBackSearch"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Enter car make"
-            android:inputType="text" />
+            android:src="@android:drawable/ic_media_previous"
+            android:background="@android:color/transparent"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search Car"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginVertical="16dp" />
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Make to Search" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btnSearch"
@@ -37,25 +58,29 @@
             android:src="@android:drawable/ic_menu_search"
             android:background="@android:color/transparent"
             android:contentDescription="Search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <!-- No Result Message -->
     <TextView
         android:id="@+id/tvNoResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="No cars found for this make"
-        android:textSize="16sp"
         android:textColor="@android:color/holo_red_dark"
         android:visibility="gone"
         android:gravity="center"
-        android:paddingTop="10dp" />
+        android:layout_marginTop="12dp" />
 
-    <!-- Recycler View -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchResults"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
