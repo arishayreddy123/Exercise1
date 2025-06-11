@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingTop="96dp"
-    android:padding="24dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFEBEE">
+    android:background="#FFEBEE"
+    android:padding="24dp">
 
-    <!-- Back button with label -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvDeleteHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Car"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical">
+        android:layout_below="@id/tvDeleteHeader"
+        android:layout_marginTop="24dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/btnBackDelete"
+            android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_media_previous"
+            android:src="@drawable/ic_black"
             android:background="@android:color/transparent"
-            android:contentDescription="Back" />
+            android:contentDescription="Back"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
             android:textSize="16sp"
-            android:layout_marginStart="8dp" />
+            android:paddingStart="4dp"/>
     </LinearLayout>
 
-    <!-- Page title -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Car"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginVertical="16dp" />
-
-    <!-- RecyclerView for cars -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDelete"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -2,83 +2,85 @@ package com.arishay.ex1;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
+import com.google.firebase.database.ValueEventListener;
 
 public class SearchCarActivity extends AppCompatActivity {
 
-    private EditText etSearch;
-    private ImageButton btnSearch, btnBackSearch;
-    private TextView tvNoResults;
-    private RecyclerView rvSearchResults;
+    private EditText etSearchMake;
+    private Button btnSearch, btnBackSearch;
+    private TextView tvSearchResult;
 
     private DatabaseReference dbRef;
-    private ArrayList<Car> carList;
-    private CarAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_car);
 
-        etSearch = findViewById(R.id.etSearch);
+        etSearchMake = findViewById(R.id.etSearchMake);
         btnSearch = findViewById(R.id.btnSearch);
         btnBackSearch = findViewById(R.id.btnBackSearch);
-        tvNoResults = findViewById(R.id.tvNoResults);
-        rvSearchResults = findViewById(R.id.rvSearchResults);
-
-        rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
-        carList = new ArrayList<>();
-        adapter = new CarAdapter(carList);
-        rvSearchResults.setAdapter(adapter);
+        tvSearchResult = findViewById(R.id.tvSearchResult);
 
         dbRef = FirebaseDatabase.getInstance().getReference("cars");
 
-        btnBackSearch.setOnClickListener(v -> finish());
-
         btnSearch.setOnClickListener(v -> {
-            String makeToSearch = etSearch.getText().toString().trim().toLowerCase();
-            if (TextUtils.isEmpty(makeToSearch)) {
-                Toast.makeText(this, "Please enter a car make", Toast.LENGTH_SHORT).show();
-                return;
+            String makeInput = etSearchMake.getText().toString().trim();
+            if (TextUtils.isEmpty(makeInput)) {
+                etSearchMake.setError("Enter a car make");
+            } else {
+                searchCar(makeInput);
             }
-            searchCarsByMake(makeToSearch);
         });
+
+        btnBackSearch.setOnClickListener(v -> finish());
     }
 
-    private void searchCarsByMake(String make) {
+    private void searchCar(String makeInput) {
+        String makeLower = makeInput.toLowerCase();
+
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                carList.clear();
+                StringBuilder resultBuilder = new StringBuilder();
+                boolean found = false;
+
                 for (DataSnapshot carSnap : snapshot.getChildren()) {
-                    Car car = carSnap.getValue(Car.class);
-                    if (car != null && car.make != null &&
-                            car.make.toLowerCase().contains(make)) {
-                        carList.add(car);
+                    String make = carSnap.child("make").getValue(String.class);
+                    String model = carSnap.child("model").getValue(String.class);
+                    String year = carSnap.child("year").getValue(String.class);
+
+                    if (make != null && make.toLowerCase().equals(makeLower)) {
+                        found = true;
+                        resultBuilder.append("Make: ").append(make).append("\n");
+                        resultBuilder.append("Model: ").append(model != null ? model : "N/A").append("\n");
+                        resultBuilder.append("Year: ").append(year != null ? year : "N/A").append("\n\n");
                     }
                 }
 
-                if (carList.isEmpty()) {
-                    tvNoResults.setVisibility(View.VISIBLE);
+                if (found) {
+                    tvSearchResult.setText(resultBuilder.toString());
                 } else {
-                    tvNoResults.setVisibility(View.GONE);
+                    tvSearchResult.setText("No cars found for make: " + makeInput);
                 }
-
-                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SearchCarActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchCarActivity.this, "Failed to read data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

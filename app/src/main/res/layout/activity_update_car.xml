@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#FFF3E0"
-    android:padding="24dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/btnBackUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_media_previous"
-            android:background="@android:color/transparent"
-            android:contentDescription="Back" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:textSize="18sp" />
-    </LinearLayout>
+    android:layout_height="match_parent"
+    android:background="#FFF9C4"
+    android:padding="24dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tvUpdateHeader"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update Car Details"
-        android:textSize="24sp"
+        android:text="Update Car"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="12dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUpdate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUpdateHeader"
+        android:layout_marginTop="24dp"
+        android:paddingBottom="80dp"/>
+
+    <LinearLayout
+        android:id="@+id/backContainer"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_black"
+            android:contentDescription="Back"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textSize="16sp"
+            android:paddingStart="4dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
