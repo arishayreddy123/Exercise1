@@ -2,15 +2,10 @@ package com.arishay.ex1;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.database.*;
-
 import java.util.ArrayList;
 
 public class DeleteCarActivity extends AppCompatActivity {
@@ -19,7 +14,7 @@ public class DeleteCarActivity extends AppCompatActivity {
     private CarDeleteAdapter adapter;
     private ArrayList<Car> carList;
     private DatabaseReference dbRef;
-    private ImageButton btnBackDelete;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +22,7 @@ public class DeleteCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delete_car);
 
         recyclerView = findViewById(R.id.recyclerViewDelete);
-        btnBackDelete = findViewById(R.id.btnBackDelete);
+        btnBack = findViewById(R.id.btnBack);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         carList = new ArrayList<>();
@@ -35,38 +30,29 @@ public class DeleteCarActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         dbRef = FirebaseDatabase.getInstance().getReference("cars");
-
-        btnBackDelete.setOnClickListener(v -> finish());
-
         loadCars();
+
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadCars() {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot snapshot) {
                 carList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Car car = snap.getValue(Car.class);
-                    if (car != null) {
-                        carList.add(car);
-                    }
+                    if (car != null) carList.add(car);
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DeleteCarActivity.this, "Failed to load cars", Toast.LENGTH_SHORT).show();
-            }
+            public void onCancelled(DatabaseError error) {}
         });
     }
 
     private void deleteCar(String carId) {
-        dbRef.child(carId).removeValue().addOnSuccessListener(unused -> {
-            Toast.makeText(this, "Car deleted", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show();
-        });
+        dbRef.child(carId).removeValue();
     }
 }

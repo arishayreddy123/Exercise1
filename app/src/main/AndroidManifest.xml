@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Required for accessing internet for JSON API -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,6 +16,7 @@
         android:theme="@style/Theme.Ex1"
         tools:targetApi="31">
 
+        <!-- Main entry point -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -24,11 +26,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Car management activities -->
         <activity android:name=".AddCarActivity" />
         <activity android:name=".UpdateCarActivity" />
         <activity android:name=".DeleteCarActivity" />
         <activity android:name=".SearchCarActivity" />
 
-    </application>
+        <!-- JSON API (Exercise 2) -->
+        <activity android:name=".FetchPostsActivity" />
 
+    </application>
 </manifest>
